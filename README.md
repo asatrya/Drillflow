@@ -37,6 +37,28 @@ Our goal was to implement a WITSML server on a modern stack: Java 11, Spring Boo
 
 ## Getting Started
 
+### Clone project & set working directory
+
+```bash
+git clone https://github.com/asatrya/Drillflow
+cd Drillflow
+```
+
+### Check Java version
+
+Make sure your Java version is Java 11
+
+```bash
+java -version
+# output: openjdk version "11.0.3" 2019-04-16
+```
+
+If it's not, then change the version first
+
+```bash
+sudo update-alternatives --config java
+```
+
 ### Building
 
 Execute:
@@ -47,10 +69,19 @@ mvn clean install
 
 ### Running
 
+Set environment variable:
+
+```bash
+export VALVE_API_KEY=secret
+
+# url of JWT authentication
+export TOKEN_PATH=http://localhost:8082/login
+```
+
 Execute:
 
 ```bash
-java -jar target/server-0.0.1-SNAPSHOT.jar
+java -jar df-server/target/df-server-0.0.1-SNAPSHOT.jar
 ```
 
 ### Testing
@@ -86,6 +117,23 @@ By default the server should return the following response:
 
 For Postman, use a POST query to the same URL as stated above with encoding type as `text/xml` and add a header with key `SOAPAction`and the value 
 `http://www.witsml.org/action/120/Store.WMLS_GetVersion`. Then you can use the same query as above.
+
+Your request from Postman should similar to this
+
+```bash
+curl -X POST \
+  http://localhost:7070/Service/WMLS \
+  -H 'Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
+  -H 'Content-Type: text/plain' \
+  -H 'SOAPAction: http://www.witsml.org/action/120/Store.WMLS_GetVersion' \
+  -H 'cache-control: no-cache' \
+  -d '<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.witsml.org/message/120">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:WMLS_GetVersion soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+   </soapenv:Body>
+</soapenv:Envelope>'
+```
 
 ### CVE Checking
 
