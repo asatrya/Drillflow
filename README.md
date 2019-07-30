@@ -118,7 +118,9 @@ By default the server should return the following response:
 For Postman, use a POST query to the same URL as stated above with encoding type as `text/xml` and add a header with key `SOAPAction`and the value 
 `http://www.witsml.org/action/120/Store.WMLS_GetVersion`. Then you can use the same query as above.
 
-Your request from Postman should similar to this
+Your request from Postman should similar to this: (note that `YWRtaW46cGFzc3dvcmQ=` is Base64Encoded from `admin:password`).
+
+##### GetVersion
 
 ```bash
 curl -X POST \
@@ -133,6 +135,24 @@ curl -X POST \
       <ns:WMLS_GetVersion soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
    </soapenv:Body>
 </soapenv:Envelope>'
+```
+
+##### GetCap
+
+```bash
+curl -X POST \
+  http://localhost:7070/Service/WMLS \
+  -H 'Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
+  -H 'Content-Type: text/xml' \
+  -H 'Postman-Token: 7c278763-ce85-4a9e-9523-e0d2fdd657cd' \
+  -H 'cache-control: no-cache' \
+  -d '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://www.witsml.org/wsdl/120" xmlns:types="http://www.witsml.org/wsdl/120/encodedTypes" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <q1:WMLS_GetCap xmlns:q1="http://www.witsml.org/message/120">
+            <OptionsIn xsi:type="xsd:string">dataVersion=1.4.1.1</OptionsIn>
+        </q1:WMLS_GetCap>
+    </soap:Body>
+</soap:Envelope>'
 ```
 
 ### CVE Checking
